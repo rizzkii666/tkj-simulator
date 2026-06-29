@@ -63,8 +63,8 @@ app.get("/", (req, res) => {
 
 // Register
 app.post("/register", (req, res) => {
-  const { name, email, password, role } = req.body;
-  const userRole = role || "student";
+  const { name, email, password } = req.body;
+  const userRole = "student"; // Selalu paksa peran sebagai 'student' untuk pendaftaran baru
 
   db.run(
     `INSERT INTO users (name, email, password, role, level, xp) VALUES (?, ?, ?, ?, 1, 0)`,

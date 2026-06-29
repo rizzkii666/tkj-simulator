@@ -14,13 +14,10 @@ export default function Dashboard() {
 
   const loadDashboardData = async (email) => {
     try {
-      // Fetch leaderboard
       const resList = await axios.get(`${API_BASE_URL}/students`);
       if (resList.data.success) {
         setLeaderboard(resList.data.students);
       }
-
-      // Fetch user activities
       const resStats = await axios.get(`${API_BASE_URL}/student-stats?email=${email}`);
       if (resStats.data.success) {
         setRecentActivities(resStats.data.activities.slice(0, 3));
@@ -44,171 +41,176 @@ export default function Dashboard() {
 
   if (!currentUser) return null;
 
+  const labModules = [
+    {
+      emoji: "🖥️",
+      title: "Simulator Topologi Jaringan",
+      desc: "Rancang topologi LAN, pasang kabel ethernet virtual, konfigurasi IP dan uji ping interaktif.",
+      link: "/simulation",
+      btnText: "Buka Simulator",
+      gradient: "from-blue-500 to-indigo-600",
+      bgGlow: "bg-blue-500/10",
+    },
+    {
+      emoji: "⚡",
+      title: "RJ-45 Crimping Game",
+      desc: "Susun kabel UTP sesuai standar warna T568A/T568B, press dengan tang krimp, dan uji LAN Tester!",
+      link: "/game-crimping",
+      btnText: "Mulai Praktik",
+      gradient: "from-amber-500 to-orange-600",
+      bgGlow: "bg-amber-500/10",
+    },
+    {
+      emoji: "🧠",
+      title: "Kuis Evaluasi Teori",
+      desc: "Uji pemahaman model OSI, subnetting IP, kelas IP address, dan perangkat keras jaringan.",
+      link: "/quiz",
+      btnText: "Mulai Kuis",
+      gradient: "from-emerald-500 to-teal-600",
+      bgGlow: "bg-emerald-500/10",
+    },
+    {
+      emoji: "💬",
+      title: "Forum Tanya Jawab",
+      desc: "Diskusikan kendala konfigurasi VLAN, gateway, atau minta bantuan dari Guru pengampu kelas.",
+      link: "/forum",
+      btnText: "Gabung Forum",
+      gradient: "from-violet-500 to-purple-600",
+      bgGlow: "bg-violet-500/10",
+    },
+  ];
+
   return (
-    <div className="flex bg-slate-50 min-h-screen text-slate-800">
+    <div className="flex bg-[#f8fafc] min-h-screen text-slate-800">
       <Sidebar />
 
       <main className="flex-1 p-4 lg:p-8 overflow-y-auto max-w-7xl mx-auto">
         {/* Welcome Section */}
-        <header className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">
-              Selamat Belajar, {currentUser.name}! 👋
-            </h1>
-            <p className="text-slate-500 text-sm mt-0.5">
-              Siap mengasah keterampilan TKJ hari ini? Pilih salah satu laboratorium virtual di bawah.
-            </p>
-          </div>
-          <div className="flex items-center space-x-2 text-indigo-650 bg-indigo-50 border border-indigo-150 rounded-2xl px-4 py-2 text-xs font-bold shadow-sm">
-            <span>🏆 Skor Anda:</span>
-            <span className="text-indigo-900 font-extrabold">{currentUser.xp} XP</span>
+        <header className="mb-8 animate-fade-in">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+              <p className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1">Selamat Datang Kembali 👋</p>
+              <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
+                Hai, {currentUser.name}!
+              </h1>
+              <p className="text-slate-400 text-sm mt-1 font-medium">
+                Siap mengasah keterampilan TKJ hari ini?
+              </p>
+            </div>
+            <div className="flex items-center space-x-2 bg-gradient-to-r from-indigo-500 to-violet-600 text-white rounded-2xl px-5 py-2.5 text-xs font-bold shadow-lg shadow-indigo-500/20">
+              <span>🏆</span>
+              <span>{currentUser.xp} XP</span>
+              <span className="w-px h-4 bg-white/30" />
+              <span>Level {currentUser.level}</span>
+            </div>
           </div>
         </header>
 
         {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           
-          {/* Main Action Modules */}
+          {/* Main Lab Modules */}
           <div className="lg:col-span-2 space-y-6">
-            <h3 className="text-base font-black text-slate-900 mb-1 uppercase tracking-wider">Laboratorium Praktik Virtual</h3>
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Laboratorium Praktik Virtual</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Simulator Card */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-indigo-400 hover:shadow-md transition flex flex-col justify-between min-h-[220px]">
-                <div>
-                  <span className="text-3xl mb-3 block">🔌</span>
-                  <h4 className="font-extrabold text-slate-900 text-base mb-1.5">Simulator Topologi Jaringan</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    Rancang topologi LAN, pasang kabel ethernet virtual, konfigurasi IP address router, dan lakukan uji ping interaktif.
-                  </p>
-                </div>
-                <Link
-                  to="/simulation"
-                  onClick={() => playSound("click")}
-                  className="bg-indigo-600 hover:bg-indigo-550 text-white font-bold text-xs px-4 py-3 rounded-xl transition text-center shadow-sm shadow-indigo-600/10 mt-6"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {labModules.map((mod, idx) => (
+                <div
+                  key={idx}
+                  className="group bg-white border border-slate-200/60 rounded-[24px] p-5 card-hover flex flex-col justify-between min-h-[210px] relative overflow-hidden"
                 >
-                  Buka Simulator Jaringan
-                </Link>
-              </div>
-
-              {/* Crimping Game Card */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-indigo-400 hover:shadow-md transition flex flex-col justify-between min-h-[220px]">
-                <div>
-                  <span className="text-3xl mb-3 block">✂️</span>
-                  <h4 className="font-extrabold text-slate-900 text-base mb-1.5">RJ-45 Crimping Game</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    Susun kabel UTP sesuai standar kode warna T568A atau T568B, press menggunakan tang krimp, dan uji dengan LAN Tester!
-                  </p>
+                  {/* Subtle glow in corner */}
+                  <div className={`absolute -top-8 -right-8 w-24 h-24 ${mod.bgGlow} rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                  
+                  <div className="relative">
+                    <span className="text-3xl mb-3 block">{mod.emoji}</span>
+                    <h4 className="font-extrabold text-slate-900 text-[15px] mb-1.5">{mod.title}</h4>
+                    <p className="text-xs text-slate-400 leading-relaxed font-medium">
+                      {mod.desc}
+                    </p>
+                  </div>
+                  <Link
+                    to={mod.link}
+                    onClick={() => playSound("click")}
+                    className={`relative bg-gradient-to-r ${mod.gradient} text-white font-bold text-xs px-4 py-3 rounded-xl transition-all text-center shadow-md mt-5 active:scale-[0.97] hover:shadow-lg`}
+                  >
+                    {mod.btnText} →
+                  </Link>
                 </div>
-                <Link
-                  to="/game-crimping"
-                  onClick={() => playSound("click")}
-                  className="bg-indigo-600 hover:bg-indigo-550 text-white font-bold text-xs px-4 py-3 rounded-xl transition text-center shadow-sm shadow-indigo-600/10 mt-6"
-                >
-                  Mulai Praktik Crimping
-                </Link>
-              </div>
-
-              {/* Quiz Card */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-indigo-400 hover:shadow-md transition flex flex-col justify-between min-h-[200px]">
-                <div>
-                  <span className="text-3xl mb-3 block">📝</span>
-                  <h4 className="font-extrabold text-slate-900 text-base mb-1.5">Kuis Evaluasi Teori</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    Uji pemahaman Anda tentang model OSI, subnetting IP, pembagian kelas IP address, dan perangkat keras jaringan LAN.
-                  </p>
-                </div>
-                <Link
-                  to="/quiz"
-                  onClick={() => playSound("click")}
-                  className="bg-indigo-600 hover:bg-indigo-550 text-white font-bold text-xs px-4 py-3 rounded-xl transition text-center shadow-sm shadow-indigo-600/10 mt-6"
-                >
-                  Uji Pemahaman Teori
-                </Link>
-              </div>
-
-              {/* Forum Card */}
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-indigo-400 hover:shadow-md transition flex flex-col justify-between min-h-[200px]">
-                <div>
-                  <span className="text-3xl mb-3 block">💬</span>
-                  <h4 className="font-extrabold text-slate-900 text-base mb-1.5">Forum Tanya Jawab</h4>
-                  <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                    Tanyakan kendala konfigurasi VLAN, default gateway, atau mintalah bantuan koreksi tugas langsung kepada Guru pengampu kelas.
-                  </p>
-                </div>
-                <Link
-                  to="/forum"
-                  onClick={() => playSound("click")}
-                  className="bg-indigo-600 hover:bg-indigo-550 text-white font-bold text-xs px-4 py-3 rounded-xl transition text-center shadow-sm shadow-indigo-600/10 mt-6"
-                >
-                  Gabung Diskusi Forum
-                </Link>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Right Sidebar - Leaderboard */}
+          {/* Right Sidebar */}
           <div className="space-y-6">
-            <h3 className="text-base font-black text-slate-900 mb-1 uppercase tracking-wider">Leaderboard Kelas</h3>
-            
-            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
-              <p className="text-xs text-slate-400 mb-4 font-semibold">
-                Ranking berdasarkan akumulasi level kompetensi dan total XP yang tersimpan di SQLite.
-              </p>
-
-              {loading ? (
-                <p className="text-xs text-slate-450 italic text-center py-4">Memuat peringkat...</p>
-              ) : (
-                <div className="space-y-3.5 max-h-[300px] overflow-y-auto pr-1 scrollbar-thin">
-                  {leaderboard.map((student, idx) => {
-                    const isSelf = student.email === currentUser.email;
-                    return (
-                      <div
-                        key={student.email}
-                        className={`flex items-center justify-between p-3 rounded-2xl border transition-colors ${
-                          isSelf 
-                            ? "bg-indigo-50 border-indigo-200" 
-                            : "bg-slate-50 border-slate-150 hover:bg-slate-100/50"
-                        }`}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <span className="text-xs font-black text-slate-400 w-5 text-center">#{idx + 1}</span>
-                          <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm text-white ${
-                            isSelf ? "bg-indigo-600" : "bg-slate-400"
+            {/* Leaderboard */}
+            <div>
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Leaderboard Kelas</h3>
+              <div className="bg-white border border-slate-200/60 rounded-[24px] p-5 card-hover">
+                {loading ? (
+                  <p className="text-xs text-slate-400 italic text-center py-6">Memuat peringkat...</p>
+                ) : (
+                  <div className="space-y-2.5 max-h-[320px] overflow-y-auto pr-1 scrollbar-thin">
+                    {leaderboard.map((student, idx) => {
+                      const isSelf = student.email === currentUser.email;
+                      const medals = ["🥇", "🥈", "🥉"];
+                      return (
+                        <div
+                          key={student.email}
+                          className={`flex items-center justify-between p-2.5 rounded-xl transition-all ${
+                            isSelf 
+                              ? "bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-200/60" 
+                              : "hover:bg-slate-50"
+                          }`}
+                        >
+                          <div className="flex items-center space-x-2.5">
+                            <span className="text-sm w-6 text-center">
+                              {idx < 3 ? medals[idx] : <span className="text-[11px] text-slate-400 font-bold">#{idx + 1}</span>}
+                            </span>
+                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs text-white ${
+                              isSelf ? "bg-gradient-to-br from-indigo-500 to-violet-600" : "bg-slate-300"
+                            }`}>
+                              {student.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="overflow-hidden">
+                              <p className="font-bold text-slate-700 text-xs truncate max-w-[100px]">{student.name}</p>
+                              <span className="text-[9px] text-slate-400 font-semibold">Lvl {student.level}</span>
+                            </div>
+                          </div>
+                          <span className={`text-[11px] font-bold px-2 py-0.5 rounded-lg ${
+                            isSelf ? "bg-indigo-500 text-white" : "bg-slate-100 text-slate-600"
                           }`}>
-                            {student.name.charAt(0).toUpperCase()}
-                          </div>
-                          <div className="overflow-hidden w-28">
-                            <p className="font-bold text-slate-800 text-xs truncate">{student.name}</p>
-                            <span className="text-[9px] text-slate-450 font-bold">Lvl {student.level}</span>
-                          </div>
+                            {student.xp.toLocaleString()} XP
+                          </span>
                         </div>
-                        <span className="text-xs font-mono font-bold text-slate-700 bg-white border border-slate-150/60 px-2 py-0.5 rounded shadow-sm">
-                          {student.xp.toLocaleString()} XP
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Recent activity timeline */}
-            <h3 className="text-base font-black text-slate-900 mb-1 uppercase tracking-wider">Aktivitas Terakhir</h3>
-            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm space-y-3">
-              {recentActivities.map((act) => (
-                <div key={act.id} className="text-xs font-semibold border-b border-slate-100 pb-2.5 last:border-b-0 last:pb-0">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-indigo-650 font-bold">{act.type}</span>
-                    <span className="text-[9px] text-slate-400 font-mono">{act.timestamp}</span>
+            {/* Recent Activities */}
+            <div>
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Aktivitas Terakhir</h3>
+              <div className="bg-white border border-slate-200/60 rounded-[24px] p-5 card-hover space-y-3">
+                {recentActivities.map((act) => (
+                  <div key={act.id} className="border-b border-slate-100/80 pb-3 last:border-b-0 last:pb-0">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-[10px] font-bold text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-md">{act.type}</span>
+                      <span className="text-[9px] text-slate-350 font-mono">{act.timestamp}</span>
+                    </div>
+                    <p className="text-slate-700 font-semibold text-xs">{act.activity_name}</p>
+                    <span className="text-[10px] text-emerald-500 font-bold mt-0.5 block">+{act.xp_gained} XP</span>
                   </div>
-                  <p className="text-slate-800 font-bold">{act.activity_name}</p>
-                  <span className="text-[10px] text-emerald-600 mt-0.5 block">+{act.xp_gained} XP</span>
-                </div>
-              ))}
-              {recentActivities.length === 0 && (
-                <p className="text-xs text-slate-400 italic text-center py-4">Belum ada riwayat aktivitas praktik.</p>
-              )}
+                ))}
+                {recentActivities.length === 0 && (
+                  <div className="text-center py-6">
+                    <span className="text-2xl block mb-2">📋</span>
+                    <p className="text-xs text-slate-400 font-medium">Belum ada riwayat aktivitas.</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
