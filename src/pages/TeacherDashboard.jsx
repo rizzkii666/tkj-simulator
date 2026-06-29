@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { playSound } from "../utils/audio";
+import { API_BASE_URL } from "../config";
 
 export default function TeacherDashboard() {
   const [students, setStudents] = useState([]);
@@ -33,7 +34,7 @@ export default function TeacherDashboard() {
     try {
       setLoading(true);
       // Fetch students from SQLite
-      const res = await axios.get("http://localhost:5000/students");
+      const res = await axios.get(`${API_BASE_URL}/students`);
       if (res.data.success) {
         setStudents(res.data.students);
       }
@@ -157,7 +158,7 @@ export default function TeacherDashboard() {
   const resetStudentProgress = async (email) => {
     playSound("click");
     try {
-      const res = await axios.post("http://localhost:5000/reset-student", { email });
+      const res = await axios.post(`${API_BASE_URL}/reset-student`, { email });
       if (res.data.success) {
         playSound("success");
         alert(`Sukses! Progres belajar siswa ${email} telah direset ke level 1 di SQLite database.`);

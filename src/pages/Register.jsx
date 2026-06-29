@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { playSound } from "../utils/audio";
+import { API_BASE_URL } from "../config";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Register() {
     playSound("click");
 
     try {
-      const res = await axios.post("http://localhost:5000/register", {
+      const res = await axios.post(`${API_BASE_URL}/register`, {
         name,
         email,
         password,

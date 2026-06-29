@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { playSound } from "../utils/audio";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 
 const WIRE_TYPES = [
@@ -143,7 +144,7 @@ export default function GameCrimping() {
               window.dispatchEvent(new Event("storage"));
 
               // SQLite Save
-              axios.post("http://localhost:5000/update-progress", {
+              axios.post(`${API_BASE_URL}/update-progress`, {
                 email: user.email,
                 xp: newXp,
                 level: newLevel,
@@ -259,7 +260,7 @@ export default function GameCrimping() {
             </div>
 
             {/* RJ45 Connector Visualization - Mobile Scaling */}
-            <div className="my-4 flex flex-col items-center z-10 transform scale-80 sm:scale-90 md:scale-100 origin-center">
+            <div className="my-4 flex flex-col items-center z-10 transform scale-75 sm:scale-95 md:scale-100 origin-center">
               
               {/* Connector Body */}
               <div className="w-[320px] md:w-[340px] bg-slate-800 border border-slate-700 rounded-2xl relative shadow-xl p-3 md:p-4 pt-10 pb-4">

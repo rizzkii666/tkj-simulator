@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { playSound } from "../utils/audio";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 
 const DEFAULT_QUIZZES = [
@@ -183,7 +184,7 @@ export default function Quiz() {
       window.dispatchEvent(new Event("storage"));
 
       // SQLite Save
-      axios.post("http://localhost:5000/update-progress", {
+      axios.post(`${API_BASE_URL}/update-progress`, {
         email: user.email,
         xp: newXp,
         level: newLevel,

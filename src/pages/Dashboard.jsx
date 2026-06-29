@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
 import { playSound } from "../utils/audio";
+import { API_BASE_URL } from "../config";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -14,13 +15,13 @@ export default function Dashboard() {
   const loadDashboardData = async (email) => {
     try {
       // Fetch leaderboard
-      const resList = await axios.get("http://localhost:5000/students");
+      const resList = await axios.get(`${API_BASE_URL}/students`);
       if (resList.data.success) {
         setLeaderboard(resList.data.students);
       }
 
       // Fetch user activities
-      const resStats = await axios.get(`http://localhost:5000/student-stats?email=${email}`);
+      const resStats = await axios.get(`${API_BASE_URL}/student-stats?email=${email}`);
       if (resStats.data.success) {
         setRecentActivities(resStats.data.activities.slice(0, 3));
       }

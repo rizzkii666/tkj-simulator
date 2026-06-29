@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { playSound } from "../utils/audio";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 
 const LEVEL_CHALLENGES = [
@@ -460,7 +461,7 @@ export default function Simulation() {
                 window.dispatchEvent(new Event("storage"));
 
                 // SQLite Save
-                axios.post("http://localhost:5000/update-progress", {
+                axios.post(`${API_BASE_URL}/update-progress`, {
                   email: user.email,
                   xp: newXp,
                   level: newLevel,
@@ -494,7 +495,7 @@ export default function Simulation() {
               window.dispatchEvent(new Event("storage"));
 
               // SQLite Save
-              axios.post("http://localhost:5000/update-progress", {
+              axios.post(`${API_BASE_URL}/update-progress`, {
                 email: user.email,
                 xp: newXp,
                 level: newLevel,
@@ -681,38 +682,38 @@ export default function Simulation() {
                 <button
                   onClick={() => addDevice("PC")}
                   disabled={simMode === "challenges"}
-                  className={`w-full p-2.5 rounded-xl text-left text-xs font-bold transition flex items-center space-x-2.5 border ${
+                  className={`w-full p-2 lg:p-2.5 rounded-xl text-center lg:text-left text-[10px] lg:text-xs font-bold transition flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:space-x-2.5 border ${
                     simMode === "challenges"
                       ? "bg-slate-50 text-slate-350 cursor-not-allowed border-slate-100"
                       : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700 shadow-inner"
                   }`}
                 >
-                  <span>💻</span>
-                  <span className="hidden lg:inline">PC</span>
+                  <span className="text-sm lg:text-base">💻</span>
+                  <span>PC</span>
                 </button>
                 <button
                   onClick={() => addDevice("Switch")}
                   disabled={simMode === "challenges"}
-                  className={`w-full p-2.5 rounded-xl text-left text-xs font-bold transition flex items-center space-x-2.5 border ${
+                  className={`w-full p-2 lg:p-2.5 rounded-xl text-center lg:text-left text-[10px] lg:text-xs font-bold transition flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:space-x-2.5 border ${
                     simMode === "challenges"
                       ? "bg-slate-50 text-slate-350 cursor-not-allowed border-slate-100"
                       : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700 shadow-inner"
                   }`}
                 >
-                  <span>📡</span>
-                  <span className="hidden lg:inline">Switch</span>
+                  <span className="text-sm lg:text-base">📡</span>
+                  <span>Switch</span>
                 </button>
                 <button
                   onClick={() => addDevice("Router")}
                   disabled={simMode === "challenges"}
-                  className={`w-full p-2.5 rounded-xl text-left text-xs font-bold transition flex items-center space-x-2.5 border ${
+                  className={`w-full p-2 lg:p-2.5 rounded-xl text-center lg:text-left text-[10px] lg:text-xs font-bold transition flex flex-col lg:flex-row items-center justify-center lg:justify-start lg:space-x-2.5 border ${
                     simMode === "challenges"
                       ? "bg-slate-50 text-slate-350 cursor-not-allowed border-slate-100"
                       : "bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700 shadow-inner"
                   }`}
                 >
-                  <span>🌐</span>
-                  <span className="hidden lg:inline">Router</span>
+                  <span className="text-sm lg:text-base">🌐</span>
+                  <span>Router</span>
                 </button>
               </div>
             </div>
@@ -839,7 +840,7 @@ export default function Simulation() {
                       onTouchStart={(e) => handleMouseDown(e, device.id)}
                       onClick={(e) => { e.stopPropagation(); handleNodeClick(device.id); }}
                       style={{ left: device.x, top: device.y }}
-                      className={`absolute w-[80px] h-[80px] rounded-3xl flex flex-col items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 z-10 border ${
+                      className={`absolute w-[80px] h-[80px] rounded-3xl flex flex-col items-center justify-center cursor-grab active:cursor-grabbing transition-all duration-200 z-10 border touch-none ${
                         isSelected
                           ? "bg-white border-indigo-500 shadow-lg shadow-indigo-100/50 scale-[1.08] ring-4 ring-indigo-500/10"
                           : isFirstPingNode
@@ -909,11 +910,25 @@ export default function Simulation() {
 
           </div>
 
-          {/* Right Configuration Panel */}
-          <div className="lg:col-span-3 bg-white border border-slate-200 rounded-3xl p-5 flex flex-col shadow-sm">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 pb-2 border-b border-slate-100">
-              Konfigurasi Device
-            </h3>
+          {/* Right Configuration Panel - Slide-up Bottom Sheet on Mobile, Column on Desktop */}
+          <div className={`
+            fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200/80 rounded-t-[32px] p-5 shadow-[0_-8px_30px_rgb(0,0,0,0.15)] z-45 transition-transform duration-300 transform
+            lg:sticky lg:top-8 lg:bottom-auto lg:left-auto lg:right-auto lg:col-span-3 lg:bg-white lg:border lg:rounded-3xl lg:shadow-sm lg:translate-y-0 lg:z-10 lg:flex lg:flex-col lg:min-h-[460px]
+            ${selectedDevice ? "translate-y-0" : "translate-y-full lg:translate-y-0"}
+          `}>
+            <div className="flex justify-between items-center mb-4 pb-2 border-b border-slate-100">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-450">
+                Konfigurasi Device
+              </h3>
+              {selectedDevice && (
+                <button
+                  onClick={() => { playSound("click"); setSelectedDeviceId(null); }}
+                  className="lg:hidden text-xs bg-slate-100 hover:bg-slate-200 text-slate-500 font-bold px-2.5 py-1 rounded-lg"
+                >
+                  Tutup ✕
+                </button>
+              )}
+            </div>
 
             {selectedDevice ? (
               <div className="space-y-5 flex-1 flex flex-col justify-between">

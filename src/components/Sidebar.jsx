@@ -133,7 +133,7 @@ export default function Sidebar() {
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="space-y-6">
+        <div className="space-y-6 pt-12 lg:pt-0">
           {/* Logo */}
           <div className="flex items-center space-x-3 px-2 pt-2">
             <div className="bg-indigo-600 p-2.5 rounded-xl shadow-md shadow-indigo-600/20">

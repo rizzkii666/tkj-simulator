@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import axios from "axios";
+import { API_BASE_URL } from "../config";
 
 export default function Stats() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -19,7 +20,7 @@ export default function Stats() {
 
   const fetchStats = async (email) => {
     try {
-      const res = await axios.get(`http://localhost:5000/student-stats?email=${email}`);
+      const res = await axios.get(`${API_BASE_URL}/student-stats?email=${email}`);
       if (res.data.success) {
         setActivities(res.data.activities);
       }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { playSound } from "../utils/audio";
+import { API_BASE_URL } from "../config";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function Login() {
     playSound("click");
 
     try {
-      const res = await axios.post("http://localhost:5000/login", { email, password });
+      const res = await axios.post(`${API_BASE_URL}/login`, { email, password });
       if (res.data.success) {
         localStorage.setItem("user", JSON.stringify(res.data.user));
         playSound("success");

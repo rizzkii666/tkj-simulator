@@ -104,7 +104,7 @@ export default function Materi() {
     {
       name: "Topologi Star (Bintang)",
       icon: "⭐",
-      description: "Setiap perangkat klien terhubung langsung ke satu hub atau switch pusat menggunakan kabel UTP.",
+      description: "Setiap perangkat klien terhubung langsung ke satu hub atau switch pusat menggunakan kabel UTP. Transmisi terpusat.",
       pros: ["Kerusakan satu kabel tidak mengganggu node lain", "Mudah menambah/mengurangi komputer", "Kemudahan deteksi kerusakan perangkat"],
       cons: ["Jika Switch/Hub pusat mati, seluruh jaringan lumpuh", "Butuh kabel lebih banyak dibanding Bus"],
       wiring: "Kabel Straight-Through (UTP Cat5e/6) menghubungkan PC ke Switch."
@@ -112,7 +112,7 @@ export default function Materi() {
     {
       name: "Topologi Bus",
       icon: "🚌",
-      description: "Semua komputer terhubung pada satu media transmisi utama (kabel backbone tunggal).",
+      description: "Semua komputer terhubung pada satu media transmisi utama (kabel backbone tunggal). Ujung kabel ditutup terminator.",
       pros: ["Hemat kabel dan biaya sangat murah", "Instalasi sangat sederhana untuk skala kecil"],
       cons: ["Jika kabel utama (backbone) putus, seluruh jaringan mati", "Kepadatan lalu lintas tinggi (sering tabrakan data / collision)"],
       wiring: "Menggunakan kabel Koaksial dengan T-Connector dan terminator di ujung."
@@ -120,10 +120,26 @@ export default function Materi() {
     {
       name: "Topologi Ring (Cincin)",
       icon: "⭕",
-      description: "Menghubungkan satu node ke node berikutnya hingga membentuk loop melingkar tertutup.",
+      description: "Menghubungkan satu node ke node berikutnya hingga membentuk loop melingkar tertutup. Token passing.",
       pros: ["Aliran data mengalir satu arah, meminimalisir tabrakan (collision)", "Performa stabil meskipun beban data berat"],
       cons: ["Jika satu komputer mengalami gangguan, transmisi data terhenti", "Troubleshooting relatif lebih sulit dibanding Star"],
       wiring: "Kabel STP atau UTP melingkar dari card out ke card in node tetangga."
+    },
+    {
+      name: "Topologi Mesh (Jala)",
+      icon: "🕸️",
+      description: "Setiap node saling terhubung satu sama lain secara langsung (point-to-point) memberikan toleransi kesalahan tinggi.",
+      pros: ["Redundansi tinggi; link putus tidak mempengaruhi link lain", "Kerahasiaan dan keamanan data terjamin"],
+      cons: ["Boros kabel dan port I/O pada perangkat", "Instalasi dan konfigurasi sangat rumit"],
+      wiring: "Membutuhkan banyak NIC/port RJ-45 pada setiap PC."
+    },
+    {
+      name: "Topologi Tree (Pohon)",
+      icon: "🌳",
+      description: "Kombinasi karakteristik antara topologi Star dan Bus, bercabang bertingkat layaknya pohon. Hub pusat bercabang ke hub sekunder.",
+      pros: ["Mudah didekonstruksi untuk perluasan jaringan", "Manajemen jaringan terpusat per sub-tingkat"],
+      cons: ["Kabel backbone utama rusak, seluruh jaringan cabang mati", "Konfigurasi rumit"],
+      wiring: "Hub pusat bercabang ke switch lokal menggunakan kabel UTP backbone Gigabit."
     }
   ];
 
@@ -148,15 +164,15 @@ export default function Materi() {
         <header className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div className="flex items-center space-x-2 text-indigo-650 text-sm font-semibold mb-1">
-              <span>Kurikulum Visual</span>
+              <span>Kurikulum Lengkap TKJ</span>
               <span>•</span>
-              <span>Bahan Ajar Multimedia</span>
+              <span>Bahan Ajar Utama</span>
             </div>
             <h1 className="text-3xl font-black text-slate-900">
               Dasar Teori Jaringan TKJ
             </h1>
             <p className="text-slate-500 text-sm mt-0.5">
-              Materi kurikulum SMK multimedia lengkap dengan video tutorial, ilustrasi diagram interaktif, dan pencarian modul.
+              Materi terlengkap untuk persiapan Ujian Kompetensi Keahlian (UKK) TKJ SMK.
             </p>
           </div>
 
@@ -164,7 +180,7 @@ export default function Materi() {
           <div className="w-full md:w-72 relative">
             <input
               type="text"
-              placeholder="Cari materi... (e.g. Star, UTP, IP)"
+              placeholder="Cari materi... (e.g. VLAN, WiFi, /26)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-indigo-500 font-bold"
@@ -197,7 +213,7 @@ export default function Materi() {
               activeTab === "routing" ? "text-indigo-600 border-b-2 border-indigo-600" : "text-slate-500 hover:text-slate-800"
             }`}
           >
-            🔀 Routing & Switching
+            🔀 Routing, Switching & VLAN
           </button>
           <button
             onClick={() => changeTab("cabling")}
@@ -205,7 +221,7 @@ export default function Materi() {
               activeTab === "cabling" ? "text-indigo-600 border-b-2 border-indigo-600" : "text-slate-500 hover:text-slate-800"
             }`}
           >
-            🔌 Media Transmisi & Kabel
+            🔌 Media Transmisi & Kabel UTP/Fiber
           </button>
           {customMaterials.length > 0 && (
             <button
@@ -222,7 +238,7 @@ export default function Materi() {
         {/* Tab Content */}
         {activeTab === "topologi" && (
           <div className="space-y-6 animate-fade-in">
-            {/* Interactive SVG Diagram Showcase (only show if no search is filtering it out) */}
+            {/* Interactive SVG Diagram Showcase */}
             {searchQuery === "" && (
               <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm">
                 <h3 className="text-base font-bold text-slate-900 mb-2">Diagram Interaktif Topologi Jaringan</h3>
@@ -280,8 +296,54 @@ export default function Materi() {
               </div>
             )}
 
+            {/* Comparison Table */}
+            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm overflow-x-auto scrollbar-thin">
+              <h3 className="text-sm font-bold text-slate-900 mb-3">Tabel Perbandingan Karakteristik Topologi</h3>
+              <table className="w-full text-left text-xs border-collapse font-semibold">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50 text-indigo-700">
+                    <th className="p-3">Kriteria</th>
+                    <th className="p-3">Star (Bintang)</th>
+                    <th className="p-3">Bus</th>
+                    <th className="p-3">Ring (Cincin)</th>
+                    <th className="p-3">Mesh (Jala)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-slate-700">
+                  <tr>
+                    <td className="p-3 font-bold text-slate-900">Biaya Kabel</td>
+                    <td className="p-3">Sedang</td>
+                    <td className="p-3 text-emerald-650">Sangat Murah</td>
+                    <td className="p-3">Murah</td>
+                    <td className="p-3 text-red-650">Sangat Mahal</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-bold text-slate-900">Tingkat Redundansi</td>
+                    <td className="p-3">Rendah</td>
+                    <td className="p-3">Tidak Ada</td>
+                    <td className="p-3">Rendah</td>
+                    <td className="p-3 text-emerald-650">Sangat Tinggi</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-bold text-slate-900">Kemudahan Troubleshoot</td>
+                    <td className="p-3 text-emerald-650">Sangat Mudah</td>
+                    <td className="p-3">Sulit</td>
+                    <td className="p-3">Sedang</td>
+                    <td className="p-3">Sangat Sulit</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-bold text-slate-900">Risiko Collision</td>
+                    <td className="p-3">Tidak Ada (Switch)</td>
+                    <td className="p-3 text-red-650">Tinggi</td>
+                    <td className="p-3">Sangat Rendah</td>
+                    <td className="p-3">Tidak Ada</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
             {/* Topologies Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTopologies.map((top, idx) => (
                 <div key={idx} className="bg-white border border-slate-200 rounded-3xl p-5 flex flex-col justify-between shadow-sm">
                   <div>
@@ -326,7 +388,7 @@ export default function Materi() {
         {activeTab === "ipaddress" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start animate-fade-in">
             <div className="lg:col-span-7 space-y-6">
-              {/* YouTube Video Embed (only show if no search is filtering it out) */}
+              {/* YouTube Video Embed */}
               {searchQuery === "" && (
                 <div className="bg-white border border-slate-200 rounded-3xl p-4 md:p-5 shadow-sm">
                   <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center space-x-1.5">
@@ -346,34 +408,109 @@ export default function Materi() {
                 </div>
               )}
 
-              {/* Text Module content (filtered by search query if any) */}
-              {("IP Address Subnetting Publik Privat").toLowerCase().includes(searchQuery.toLowerCase()) ? (
-                <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm">
-                  <h2 className="text-xl font-bold mb-3 text-slate-900">Alamat IP (Internet Protocol)</h2>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4 font-semibold">
-                    IP Address adalah label numerik unik yang disematkan pada setiap perangkat dalam jaringan TCP/IP.
-                  </p>
-                  
-                  <h3 className="text-sm font-bold text-slate-900 mb-2">Perbedaan IP Publik vs IP Privat (RFC 1918):</h3>
-                  <ul className="text-xs text-slate-500 space-y-2 mb-4 font-semibold list-disc list-inside">
-                    <li><strong>IP Publik</strong>: Digunakan di jaringan global internet, dapat diakses dari luar.</li>
-                    <li><strong>IP Privat</strong>: Hanya digunakan di dalam LAN lokal (sekolah/kantor). Ranges:
-                      <ul className="pl-4 list-none text-indigo-650 text-[11px]">
-                        <li>• Kelas A: 10.0.0.0 s/d 10.255.255.255</li>
-                        <li>• Kelas B: 172.16.0.0 s/d 172.31.255.255</li>
-                        <li>• Kelas C: 192.168.0.0 s/d 192.168.255.255</li>
-                      </ul>
-                    </li>
-                  </ul>
+              {/* Text Module content */}
+              {("IP Address Subnetting Publik Privat Kelas IPv4 IPv6 CIDR").toLowerCase().includes(searchQuery.toLowerCase()) ? (
+                <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm space-y-6">
+                  <div>
+                    <h2 className="text-xl font-bold mb-3 text-slate-900">Alamat IP (Internet Protocol)</h2>
+                    <p className="text-sm text-slate-600 leading-relaxed font-semibold">
+                      IP Address adalah label numerik unik yang disematkan pada setiap perangkat dalam jaringan TCP/IP. Terbagi atas dua standar utama: **IPv4** (32-bit, ditulis dalam desimal seperti `192.168.1.1`) dan **IPv6** (128-bit, ditulis dalam heksadesimal dipisahkan titik dua seperti `2001:db8::ff00:42`).
+                    </p>
+                  </div>
 
-                  <h3 className="text-sm font-bold text-slate-900 mb-2">Contoh Hitungan Subnetting (/26)</h3>
-                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs font-mono font-semibold space-y-1.5 text-slate-700">
-                    <p className="font-bold text-indigo-600">IP: 192.168.1.100/26</p>
-                    <p>1. Subnet Mask /26 = 255.255.255.192</p>
-                    <p>2. Jumlah Subnet = 2^2 = 4 subnet</p>
-                    <p>3. Jumlah Host per Subnet = 2^6 - 2 = 62 host valid</p>
-                    <p>4. Blok Subnet = 256 - 192 = 64 (Blok: 0, 64, 128, 192)</p>
-                    <p>5. IP 100 masuk blok 64. Network ID: 192.168.1.64. Broadcast ID: 192.168.1.127</p>
+                  {/* IPv4 Class Table */}
+                  <div className="border border-slate-150 rounded-2xl overflow-hidden bg-slate-50 p-4">
+                    <h4 className="text-xs font-bold text-indigo-750 uppercase tracking-wider mb-2">Kelas Alamat IPv4 Unicast</h4>
+                    <table className="w-full text-left text-[11px] font-semibold">
+                      <thead>
+                        <tr className="text-slate-400 border-b border-slate-200">
+                          <th className="pb-1.5">Kelas</th>
+                          <th className="pb-1.5">Rentang Oktet Pertama</th>
+                          <th className="pb-1.5">Subnet Mask Default</th>
+                          <th className="pb-1.5 text-right">Host Valid per Subnet</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-slate-700">
+                        <tr className="border-b border-slate-100">
+                          <td className="py-1">Kelas A</td>
+                          <td className="py-1">1 – 126</td>
+                          <td className="py-1">255.0.0.0 (/8)</td>
+                          <td className="py-1 text-right">16,777,214</td>
+                        </tr>
+                        <tr className="border-b border-slate-100">
+                          <td className="py-1">Kelas B</td>
+                          <td className="py-1">128 – 191</td>
+                          <td className="py-1">255.255.0.0 (/16)</td>
+                          <td className="py-1 text-right">65,534</td>
+                        </tr>
+                        <tr>
+                          <td className="py-1">Kelas C</td>
+                          <td className="py-1">192 – 223</td>
+                          <td className="py-1">255.255.255.0 (/24)</td>
+                          <td className="py-1 text-right">254</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* CIDR Prefix Quick Lookup Table */}
+                  <div className="border border-slate-150 rounded-2xl overflow-hidden bg-slate-50 p-4">
+                    <h4 className="text-xs font-bold text-indigo-750 uppercase tracking-wider mb-2">Lookup Subnetting Kelas C</h4>
+                    <table className="w-full text-left text-[11px] font-semibold">
+                      <thead>
+                        <tr className="text-slate-400 border-b border-slate-200">
+                          <th className="pb-1.5">Prefix</th>
+                          <th className="pb-1.5">Subnet Mask</th>
+                          <th className="pb-1.5 text-center">Jumlah Subnet</th>
+                          <th className="pb-1.5 text-right">Host Valid</th>
+                        </tr>
+                      </thead>
+                      <tbody className="text-slate-700">
+                        <tr className="border-b border-slate-100">
+                          <td className="py-1">/25</td>
+                          <td className="py-1">255.255.255.128</td>
+                          <td className="py-1 text-center">2</td>
+                          <td className="py-1 text-right">126</td>
+                        </tr>
+                        <tr className="border-b border-slate-100">
+                          <td className="py-1">/26</td>
+                          <td className="py-1">255.255.255.192</td>
+                          <td className="py-1 text-center">4</td>
+                          <td className="py-1 text-right">62</td>
+                        </tr>
+                        <tr className="border-b border-slate-100">
+                          <td className="py-1">/27</td>
+                          <td className="py-1">255.255.255.224</td>
+                          <td className="py-1 text-center">8</td>
+                          <td className="py-1 text-right">30</td>
+                        </tr>
+                        <tr className="border-b border-slate-100">
+                          <td className="py-1">/28</td>
+                          <td className="py-1">255.255.255.240</td>
+                          <td className="py-1 text-center">16</td>
+                          <td className="py-1 text-right">14</td>
+                        </tr>
+                        <tr className="border-b border-slate-100">
+                          <td className="py-1">/29</td>
+                          <td className="py-1">255.255.255.248</td>
+                          <td className="py-1 text-center">32</td>
+                          <td className="py-1 text-right">6</td>
+                        </tr>
+                        <tr>
+                          <td className="py-1">/30</td>
+                          <td className="py-1">255.255.255.252</td>
+                          <td className="py-1 text-center">64</td>
+                          <td className="py-1 text-right">2</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 mb-2">RFC 1918 (Pembagian IP Privat):</h3>
+                    <p className="text-xs text-slate-500 font-semibold leading-relaxed">
+                      IP Privat adalah alamat yang dialokasikan khusus untuk jaringan lokal di dalam rumah, sekolah, atau kantor. IP Privat tidak dapat merutekan data langsung di internet global tanpa proses **NAT (Network Address Translation)** di Router.
+                    </p>
                   </div>
                 </div>
               ) : (
@@ -463,6 +600,7 @@ export default function Materi() {
 
         {activeTab === "routing" && (
           <div className="space-y-6 animate-fade-in">
+            {/* YouTube Video Embed */}
             {searchQuery === "" && (
               <div className="bg-white border border-slate-200 rounded-3xl p-4 md:p-5 shadow-sm">
                 <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center space-x-1.5">
@@ -482,12 +620,16 @@ export default function Materi() {
               </div>
             )}
 
-            {("Routing Switching Layer 2 Layer 3 Static Dynamic RIP OSPF BGP").toLowerCase().includes(searchQuery.toLowerCase()) ? (
-              <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm">
-                <h2 className="text-xl font-bold mb-3 text-slate-900">Routing & Switching</h2>
-                <p className="text-sm text-slate-600 leading-relaxed mb-4 font-semibold">
-                  Router bekerja di OSI Layer 3 (Network) bertugas merutekan paket antar network yang berbeda IP Subnetnya. Sedangkan Switch bekerja di OSI Layer 2 (Data Link) menghubungkan perangkat lokal dalam satu LAN yang sama.
-                </p>
+            {("Routing Switching VLAN Access Trunk RIP OSPF EIGRP BGP Cisco command").toLowerCase().includes(searchQuery.toLowerCase()) ? (
+              <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm space-y-6">
+                <div>
+                  <h2 className="text-xl font-bold mb-3 text-slate-900">Switching, VLAN, dan Routing</h2>
+                  <p className="text-sm text-slate-600 leading-relaxed font-semibold">
+                    *   **Switching**: Proses pengiriman data di dalam LAN lokal berdasarkan **MAC Address** (Layer 2).
+                    *   **VLAN (Virtual LAN)**: Teknologi membagi satu fisik Switch ke dalam beberapa subnet broadcast logika terpisah.
+                    *   **Routing**: Proses meneruskan paket data antar-jaringan yang berbeda subnet menggunakan **Alamat IP** (Layer 3).
+                  </p>
+                </div>
 
                 {searchQuery === "" && (
                   <div className="border border-slate-200 bg-slate-50 rounded-2xl p-4 flex flex-col items-center my-4">
@@ -508,20 +650,36 @@ export default function Materi() {
                   </div>
                 )}
 
+                {/* VLAN Commands Block */}
+                <div className="bg-slate-900 text-slate-100 rounded-2xl p-4 font-mono text-[11px] leading-relaxed">
+                  <p className="text-indigo-400 font-bold mb-2">⚡ Contoh Perintah Konfigurasi VLAN (Cisco iOS):</p>
+                  <p>Switch# <span className="text-yellow-400">configure terminal</span></p>
+                  <p>Switch(config)# <span className="text-yellow-400">vlan 10</span></p>
+                  <p>Switch(config-vlan)# <span className="text-yellow-400">name SISWA_TKJ</span></p>
+                  <p>Switch(config-vlan)# <span className="text-yellow-400">exit</span></p>
+                  <p>Switch(config)# <span className="text-yellow-400">interface fastEthernet 0/5</span></p>
+                  <p>Switch(config-if)# <span className="text-yellow-400">switchport mode access</span></p>
+                  <p>Switch(config-if)# <span className="text-yellow-400">switchport access vlan 10</span></p>
+                  <p className="text-slate-500 mt-2"># Menghubungkan switch ke router via trunk link:</p>
+                  <p>Switch(config)# <span className="text-yellow-400">interface gigabitEthernet 0/1</span></p>
+                  <p>Switch(config-if)# <span className="text-yellow-400">switchport mode trunk</span></p>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
-                    <h3 className="font-bold text-indigo-600 text-xs uppercase tracking-wider mb-2">Switch Layer 2 vs Switch Layer 3</h3>
+                    <h3 className="font-bold text-indigo-600 text-xs uppercase tracking-wider mb-2">Perbandingan VLAN Access Port vs Trunk Port</h3>
                     <ul className="text-xs text-slate-500 space-y-1.5 font-semibold list-disc list-inside">
-                      <li><strong>Switch L2</strong>: Hanya meneruskan data berdasarkan alamat MAC Address. Tidak bisa merutekan IP.</li>
-                      <li><strong>Switch L3 (Multilayer Switch)</strong>: Mampu bertindak sebagai Switch LAN sekaligus melakukan routing IP dinamis layaknya Router.</li>
+                      <li><strong>Access Port</strong>: Hanya membawa traffic untuk 1 VLAN saja. Biasanya dihubungkan langsung ke komputer end-user (PC/Laptop).</li>
+                      <li><strong>Trunk Port</strong>: Membawa traffic untuk beberapa VLAN secara bersamaan. Dilengkapi dengan tagging IEEE 802.1Q. Dihubungkan antar-switch atau switch-ke-router.</li>
                     </ul>
                   </div>
 
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5">
-                    <h3 className="font-bold text-indigo-600 text-xs uppercase tracking-wider mb-2">Static Routing vs Dynamic Routing</h3>
-                    <ul className="text-xs text-slate-500 space-y-1.5 font-semibold list-disc list-inside">
-                      <li><strong>Static</strong>: Konfigurasi tabel routing diisi manual oleh Administrator. Cocok untuk jaringan kecil & hemat bandwidth.</li>
-                      <li><strong>Dynamic</strong>: Tabel routing terisi otomatis melalui protokol dynamic routing (RIP, OSPF, EIGRP, BGP) berdasarkan topologi jaringan terkini.</li>
+                    <h3 className="font-bold text-indigo-600 text-xs uppercase tracking-wider mb-2">Protokol Routing Dinamis</h3>
+                    <ul className="text-xs text-slate-500 space-y-1.5 font-semibold list-disc list-inside font-semibold">
+                      <li><strong>RIP (Routing Information Protocol)</strong>: Menggunakan metrik Hop Count (maks 15 hop). Cocok untuk jaringan skala kecil.</li>
+                      <li><strong>OSPF (Open Shortest Path First)</strong>: Menggunakan link-state metric, membagi jaringan berdasarkan Area. Sangat cepat konvergensinya.</li>
+                      <li><strong>BGP (Border Gateway Protocol)</strong>: Path Vector routing. Protokol inti yang menghubungkan antar-ISP di internet global.</li>
                     </ul>
                   </div>
                 </div>
@@ -536,6 +694,7 @@ export default function Materi() {
 
         {activeTab === "cabling" && (
           <div className="space-y-6 animate-fade-in">
+            {/* YouTube Video Embed */}
             {searchQuery === "" && (
               <div className="bg-white border border-slate-200 rounded-3xl p-4 md:p-5 shadow-sm">
                 <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center space-x-1.5">
@@ -555,46 +714,79 @@ export default function Materi() {
               </div>
             )}
 
-            {("Kabel UTP Fiber Optic Nirkabel Wifi Single Multi Cat5e Cat6").toLowerCase().includes(searchQuery.toLowerCase()) ? (
-              <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm">
-                <h2 className="text-xl font-bold mb-4 text-slate-900">Media Transmisi Fisik Jaringan</h2>
-                
+            {("Kabel UTP Fiber Optic Nirkabel Wifi Single Multi Cat5e Cat6 T568A T568B UTP STP FTP").toLowerCase().includes(searchQuery.toLowerCase()) ? (
+              <div className="bg-white border border-slate-200 rounded-3xl p-5 md:p-6 shadow-sm space-y-6">
+                <div>
+                  <h2 className="text-xl font-bold mb-4 text-slate-900">Media Transmisi Fisik Jaringan</h2>
+                  <p className="text-sm text-slate-600 leading-relaxed font-semibold">
+                    Media transmisi menghubungkan pengirim dan penerima data secara fisik. Terbagi atas kabel tembaga (copper), serat optik (light), dan gelombang udara (nirkabel/wireless).
+                  </p>
+                </div>
+
+                {/* UTP Color Standards Table */}
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
+                  <h3 className="font-bold text-indigo-750 text-xs uppercase tracking-wider mb-3">Tabel Urutan Pin Standar T568A vs T568B</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-semibold">
+                    <div className="bg-white border border-slate-150 rounded-xl p-3">
+                      <p className="font-extrabold text-slate-900 border-b pb-1.5 mb-1.5">Standard T568B (Straight/Umum)</p>
+                      <ol className="list-decimal list-inside space-y-1 font-mono text-[11px] text-slate-600">
+                        <li>Putih-Oranye</li>
+                        <li>Oranye</li>
+                        <li>Putih-Hijau</li>
+                        <li>Biru</li>
+                        <li>Putih-Biru</li>
+                        <li>Hijau</li>
+                        <li>Putih-Cokelat</li>
+                        <li>Cokelat</li>
+                      </ol>
+                    </div>
+                    <div className="bg-white border border-slate-150 rounded-xl p-3">
+                      <p className="font-extrabold text-slate-900 border-b pb-1.5 mb-1.5">Standard T568A (Crossover End)</p>
+                      <ol className="list-decimal list-inside space-y-1 font-mono text-[11px] text-slate-600">
+                        <li>Putih-Hijau</li>
+                        <li>Hijau</li>
+                        <li>Putih-Oranye</li>
+                        <li>Biru</li>
+                        <li>Putih-Biru</li>
+                        <li>Oranye</li>
+                        <li>Putih-Cokelat</li>
+                        <li>Cokelat</li>
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* UTP */}
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                     <span className="text-2xl mb-2 block">🔌</span>
-                    <h4 className="font-bold text-slate-900 text-sm mb-1">Kabel UTP (Unshielded Twisted Pair)</h4>
+                    <h4 className="font-bold text-slate-900 text-sm mb-1">Tipe Kabel Pelindung</h4>
                     <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                      Kabel tembaga standar LAN lokal. Terbagi atas beberapa kategori (Category/Cat):
+                      *   **UTP (Unshielded)**: Kabel pilin tanpa pelindung aluminium foil. Rentan interferensi.
+                      *   **STP (Shielded)**: Dilapisi pelindung anyaman logam untuk proteksi ekstra.
+                      *   **FTP (Foiled)**: Kabel luar dilapisi foil pelindung tunggal.
                     </p>
-                    <ul className="text-[10px] text-slate-500 font-bold mt-2 space-y-1">
-                      <li>• Cat5e: Kecepatan s/d 1 Gbps, 100 MHz</li>
-                      <li>• Cat6: Kecepatan s/d 10 Gbps, 250 MHz</li>
-                      <li>• Cat6a: Kecepatan s/d 10 Gbps, 500 MHz</li>
-                    </ul>
                   </div>
 
+                  {/* Fiber Optic */}
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                     <span className="text-2xl mb-2 block">⚡</span>
-                    <h4 className="font-bold text-slate-900 text-sm mb-1">Fiber Optic (Serat Optik)</h4>
-                    <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                      Menggunakan pulsa cahaya sebagai media rambat data. Tahan interferensi elektromagnetik.
+                    <h4 className="font-bold text-slate-900 text-sm mb-1">Karakteristik Fiber Optic</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed font-semibold font-semibold">
+                      *   **Single-mode (SM)**: Core kaca tipis (~9μm). Menggunakan sinar Laser. Jarak jangkau puluhan kilometer tanpa repeater.
+                      *   **Multi-mode (MM)**: Core kaca tebal (~50-62.5μm). Menggunakan LED. Jarak jangkau pendek (dalam gedung).
                     </p>
-                    <ul className="text-[10px] text-slate-500 font-bold mt-2 space-y-1">
-                      <li>• Single-mode (SM): Inti kaca kecil (9 micron), laser jarak jauh.</li>
-                      <li>• Multi-mode (MM): Inti kaca besar (50-62.5 micron), LED jarak dekat.</li>
-                    </ul>
                   </div>
 
+                  {/* Wireless */}
                   <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4">
                     <span className="text-2xl mb-2 block">📡</span>
-                    <h4 className="font-bold text-slate-900 text-sm mb-1">Teknologi Nirkabel (Wireless)</h4>
-                    <p className="text-xs text-slate-500 leading-relaxed font-semibold">
-                      Menggunakan gelombang elektromagnetik udara. Standard Wi-Fi IEEE 802.11:
-                    </p>
-                    <ul className="text-[10px] text-slate-500 font-bold mt-2 space-y-1">
-                      <li>• Wi-Fi 4 (802.11n): 2.4 / 5 GHz</li>
-                      <li>• Wi-Fi 5 (802.11ac): 5 GHz</li>
-                      <li>• Wi-Fi 6 (802.11ax): 2.4 / 5 / 6 GHz</li>
+                    <h4 className="font-bold text-slate-900 text-sm mb-1">Standar Wi-Fi & Frekuensi</h4>
+                    <ul className="text-[10px] text-slate-550 font-bold space-y-1 mt-1 font-semibold">
+                      <li>• Wi-Fi 4 (802.11n): Frekuensi 2.4/5 GHz</li>
+                      <li>• Wi-Fi 5 (802.11ac): Frekuensi khusus 5 GHz</li>
+                      <li>• Wi-Fi 6 (802.11ax): 2.4/5/6 GHz, efisien tinggi.</li>
+                      <li>• Wi-Fi 7 (802.11be): Bandwidth lebar s/d 320 MHz.</li>
                     </ul>
                   </div>
                 </div>
@@ -607,6 +799,7 @@ export default function Materi() {
           </div>
         )}
 
+        {/* Custom Teacher-Uploaded Materials */}
         {activeTab === "guru" && (
           <div className="space-y-6 animate-fade-in">
             {filteredCustomMaterials.map((mat, idx) => (
