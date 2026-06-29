@@ -10,6 +10,7 @@ import Quiz from "./pages/Quiz";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import Forum from "./pages/Forum";
 import Stats from "./pages/Stats";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
         <Route path="/forum" element={<Forum />} />
         <Route path="/stats" element={<Stats />} />
+        <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
   );

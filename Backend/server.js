@@ -10,7 +10,7 @@ app.use(express.json());
 const db = new sqlite3.Database("./netlearn.db");
 
 db.serialize(() => {
-  // Create users table with level and xp columns
+  // Create users table with level, xp, and avatar columns
   db.run(`
     CREATE TABLE IF NOT EXISTS users(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,13 +19,15 @@ db.serialize(() => {
       password TEXT,
       role TEXT,
       level INTEGER DEFAULT 1,
-      xp INTEGER DEFAULT 0
+      xp INTEGER DEFAULT 0,
+      avatar TEXT
     )
   `);
 
   // Try altering in case table was created with older schema
   db.run("ALTER TABLE users ADD COLUMN level INTEGER DEFAULT 1", () => {});
   db.run("ALTER TABLE users ADD COLUMN xp INTEGER DEFAULT 0", () => {});
+  db.run("ALTER TABLE users ADD COLUMN avatar TEXT", () => {});
 
   // Create activities table for statistics
   db.run(`
@@ -42,10 +44,10 @@ db.serialize(() => {
   // Seed default demo data if empty
   db.get("SELECT count(*) as count FROM users", (err, row) => {
     if (row && row.count === 0) {
-      db.run("INSERT INTO users (name, email, password, role, level, xp) VALUES (?, ?, ?, ?, ?, ?)",
-        ["Siswa Demo TKJ", "demo@tkj.sch.id", "siswa123", "student", 3, 350]);
-      db.run("INSERT INTO users (name, email, password, role, level, xp) VALUES (?, ?, ?, ?, ?, ?)",
-        ["Pak Budi (Guru)", "guru@tkj.sch.id", "guru123", "teacher", 1, 0]);
+      db.run("INSERT INTO users (name, email, password, role, level, xp, avatar) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        ["Siswa Demo TKJ", "demo@tkj.sch.id", "siswa123", "student", 3, 350, "👨‍💻"]);
+      db.run("INSERT INTO users (name, email, password, role, level, xp, avatar) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        ["Pak Budi (Guru)", "guru@tkj.sch.id", "guru123", "teacher", 1, 0, "👨‍🏫"]);
         
       // Seed initial activities for stats demo
       const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
@@ -65,10 +67,11 @@ app.get("/", (req, res) => {
 app.post("/register", (req, res) => {
   const { name, email, password } = req.body;
   const userRole = "student"; // Selalu paksa peran sebagai 'student' untuk pendaftaran baru
+  const defaultAvatar = "🎒";
 
   db.run(
-    `INSERT INTO users (name, email, password, role, level, xp) VALUES (?, ?, ?, ?, 1, 0)`,
-    [name, email, password, userRole],
+    `INSERT INTO users (name, email, password, role, level, xp, avatar) VALUES (?, ?, ?, ?, 1, 0, ?)`,
+    [name, email, password, userRole, defaultAvatar],
     function(err) {
       if (err) {
         return res.status(400).json({
@@ -102,7 +105,8 @@ app.post("/login", (req, res) => {
         email: user.email,
         role: user.role,
         level: user.level,
-        xp: user.xp
+        xp: user.xp,
+        avatar: user.avatar || (user.role === "teacher" ? "👨‍🏫" : "🎒")
       }
     });
   });
@@ -134,7 +138,7 @@ app.post("/update-progress", (req, res) => {
 // Get Students List (Leaderboard / Gradebook)
 app.get("/students", (req, res) => {
   db.all(
-    "SELECT name, email, level, xp, role FROM users WHERE role = 'student' ORDER BY (level * 2000 + xp) DESC",
+    "SELECT name, email, level, xp, role, avatar FROM users WHERE role = 'student' ORDER BY (level * 2000 + xp) DESC",
     [],
     (err, rows) => {
       if (err) {
@@ -173,6 +177,35 @@ app.get("/student-stats", (req, res) => {
       res.json({ success: true, activities: rows });
     }
   );
+});
+
+// Update Profile
+app.post("/update-profile", (req, res) => {
+  const { email, name, password, avatar } = req.body;
+
+  if (password) {
+    db.run(
+      "UPDATE users SET name = ?, password = ?, avatar = ? WHERE email = ?",
+      [name, password, avatar, email],
+      function(err) {
+        if (err) {
+          return res.status(400).json({ success: false, message: "Gagal memperbarui profil" });
+        }
+        res.json({ success: true, message: "Profil dan password berhasil diperbarui" });
+      }
+    );
+  } else {
+    db.run(
+      "UPDATE users SET name = ?, avatar = ? WHERE email = ?",
+      [name, avatar, email],
+      function(err) {
+        if (err) {
+          return res.status(400).json({ success: false, message: "Gagal memperbarui profil" });
+        }
+        res.json({ success: true, message: "Profil berhasil diperbarui" });
+      }
+    );
+  }
 });
 
 app.listen(5000, "0.0.0.0", () => {

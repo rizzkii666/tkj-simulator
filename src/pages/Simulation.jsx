@@ -734,12 +734,7 @@ export default function Simulation() {
                 onMouseLeave={handleMouseUpOrLeave}
                 onTouchMove={handleMouseMove}
                 onTouchEnd={handleMouseUpOrLeave}
-                className="w-[640px] md:w-full min-h-[460px] relative overflow-hidden select-none cursor-crosshair rounded-3xl border border-slate-200/80 shadow-inner bg-slate-50/50"
-                style={{
-                  backgroundColor: "#fafbfd",
-                  backgroundImage: "radial-gradient(#cbd5e1 1.2px, transparent 1.2px), linear-gradient(to right, #f1f5f9 1px, transparent 1px), linear-gradient(to bottom, #f1f5f9 1px, transparent 1px)",
-                  backgroundSize: "20px 20px, 40px 40px, 40px 40px"
-                }}
+                className="w-[640px] md:w-full min-h-[460px] relative overflow-hidden select-none cursor-crosshair rounded-3xl border border-slate-200/80 shadow-inner network-canvas"
               >
                 {/* SVG link lines */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">

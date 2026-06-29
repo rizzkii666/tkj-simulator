@@ -27,6 +27,7 @@ export default function Forum() {
         title: "Tanya Cara Menghitung Host Valid Prefix /27",
         category: "Subnetting",
         author: "Ahmad Dani",
+        authorAvatar: "👨‍💻",
         role: "student",
         content: "Halo pak Budi dan teman-teman, saya masih bingung cara cepat menghitung jumlah host valid untuk prefix /27. Ada yang bisa bantu jelaskan rumusnya?",
         timestamp: "2026-06-29 09:30",
@@ -34,6 +35,7 @@ export default function Forum() {
           {
             id: "r1",
             author: "Pak Budi (Guru)",
+            authorAvatar: "👨‍🏫", // Pak Budi has teacher emoji
             role: "teacher",
             content: "Halo Dani! Untuk /27, rumusnya adalah 2^(32-prefix) - 2. Berarti 2^(32-27) - 2 = 2^5 - 2 = 32 - 2 = 30 host valid per subnet. Semoga membantu ya!",
             timestamp: "2026-06-29 10:15"
@@ -41,6 +43,7 @@ export default function Forum() {
           {
             id: "r2",
             author: "Rina Amelia",
+            authorAvatar: "👩‍💻",
             role: "student",
             content: "Betul kata pak Budi, tinggal dikurangi 32 saja untuk pangkat duanya. Jadi gampang diingat!",
             timestamp: "2026-06-29 10:30"
@@ -52,6 +55,7 @@ export default function Forum() {
         title: "Kabel Crossover vs Straight untuk PC ke Router",
         category: "Cabling",
         author: "Siti Rahma",
+        authorAvatar: "👩‍💻",
         role: "student",
         content: "Mau tanya, kalau menghubungkan PC langsung ke port FastEthernet Router tanpa lewat Switch, kita pakai kabel tipe Straight atau Cross ya? Di buku nilai kok beda-beda penjelasannya.",
         timestamp: "2026-06-28 14:20",
@@ -59,6 +63,7 @@ export default function Forum() {
           {
             id: "r3",
             author: "Pak Budi (Guru)",
+            authorAvatar: "👨‍🏫",
             role: "teacher",
             content: "Pertanyaan bagus Siti. PC dan Router dianggap sebagai perangkat yang 'sejenis' karena keduanya beroperasi sebagai terminal layer atas. Jadi, untuk PC langsung ke Router, gunakan kabel **Crossover**. Gunakan Straight hanya jika dihubungkan melalui Switch/Hub.",
             timestamp: "2026-06-28 15:00"
@@ -97,6 +102,7 @@ export default function Forum() {
       title: newTitle,
       category: newCategory,
       author: currentUser.name,
+      authorAvatar: currentUser.avatar || (currentUser.role === "teacher" ? "👨‍🏫" : "🎒"),
       role: currentUser.role,
       content: newContent,
       timestamp: formattedDate,
@@ -126,6 +132,7 @@ export default function Forum() {
     const newReply = {
       id: `reply-${Date.now()}`,
       author: currentUser.name,
+      authorAvatar: currentUser.avatar || (currentUser.role === "teacher" ? "👨‍🏫" : "🎒"),
       role: currentUser.role,
       content: replyText,
       timestamp: formattedDate
@@ -199,10 +206,10 @@ export default function Forum() {
                   <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
                     {/* Author profile badge */}
                     <div className="flex items-center space-x-2">
-                      <div className={`w-7 h-7 rounded-xl flex items-center justify-center font-black text-xs text-white ${
+                      <div className={`w-7 h-7 rounded-xl flex items-center justify-center text-sm ${
                         thread.role === "teacher" ? "bg-purple-600" : "bg-indigo-600"
                       }`}>
-                        {thread.author.charAt(0).toUpperCase()}
+                        {thread.authorAvatar || "🎒"}
                       </div>
                       <div>
                         <span className="text-xs font-bold text-slate-800 mr-1.5">{thread.author}</span>
@@ -257,10 +264,10 @@ export default function Forum() {
                 </p>
 
                 <div className="flex items-center space-x-2">
-                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm text-white ${
+                  <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-base ${
                     activeThread.role === "teacher" ? "bg-purple-600" : "bg-indigo-600"
                   }`}>
-                    {activeThread.author.charAt(0).toUpperCase()}
+                    {activeThread.authorAvatar || "🎒"}
                   </div>
                   <div>
                     <span className="text-xs font-bold text-slate-800 mr-1.5">{activeThread.author}</span>
@@ -285,10 +292,10 @@ export default function Forum() {
                   <div key={rep.id} className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
                     <div className="flex justify-between items-center text-[10px] text-slate-400 font-mono font-semibold">
                       <div className="flex items-center space-x-2">
-                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-black text-[10px] text-white ${
+                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs ${
                           rep.role === "teacher" ? "bg-purple-600" : "bg-indigo-600"
                         }`}>
-                          {rep.author.charAt(0).toUpperCase()}
+                          {rep.authorAvatar || "🎒"}
                         </div>
                         <span className="font-bold text-slate-800">{rep.author}</span>
                         <span className={`text-[8px] px-1.5 py-0.5 rounded-full font-bold ${

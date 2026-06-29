@@ -16,6 +16,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #f8fafc;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Scrollbar */
@@ -96,4 +97,139 @@ body {
   background: #ef4444;
   border-radius: 50%;
   animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* ==========================================
+   Premium Dark Mode Styles Override
+   ========================================== */
+.dark body {
+  background: #0b0f19;
+  color: #f1f5f9;
+}
+
+/* Sidebar and Cards background */
+.dark .bg-white,
+.dark .bg-white\/80,
+.dark .bg-white\/90,
+.dark .bg-white\/95 {
+  background-color: #161f38 !important;
+  border-color: #24325a !important;
+}
+
+/* Side Sheet / Bottom Sheet in Simulation */
+.dark .bg-slate-900 {
+  background-color: #0f172a !important;
+}
+
+/* Dark utility elements */
+.dark .bg-slate-50,
+.dark .bg-slate-50\/80,
+.dark .bg-slate-50\/50,
+.dark .bg-slate-100 {
+  background-color: #1e294b !important;
+}
+
+/* Inputs & Form controls */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #0d1326 !important;
+  border-color: #24325a !important;
+  color: #f8fafc !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #4b5563 !important;
+}
+
+.dark .border,
+.dark .border-slate-200,
+.dark .border-slate-200\/60,
+.dark .border-slate-250,
+.dark .border-slate-200\/80,
+.dark .border-slate-150,
+.dark .border-slate-100,
+.dark .border-slate-100\/80,
+.dark .border-indigo-100\/80 {
+  border-color: #24325a !important;
+}
+
+/* Gradients for profiles and stats card */
+.dark .bg-gradient-to-br.from-indigo-50.to-violet-50 {
+  background-image: linear-gradient(135deg, #1e1b4b 0%, #2e1065 100%) !important;
+  border-color: #4338ca !important;
+}
+
+.dark .bg-gradient-to-br.from-purple-50.to-fuchsia-50 {
+  background-image: linear-gradient(135deg, #3b0764 0%, #4a044e 100%) !important;
+  border-color: #7e22ce !important;
+}
+
+.dark .bg-gradient-to-br.from-slate-50.to-indigo-50\/50 {
+  background-image: linear-gradient(135deg, #0d1326 0%, #1e1b4b 100%) !important;
+  border-color: #24325a !important;
+}
+
+/* Text styles */
+.dark .text-slate-800 { color: #f1f5f9 !important; }
+.dark .text-slate-900 { color: #f8fafc !important; }
+.dark .text-slate-700 { color: #cbd5e1 !important; }
+.dark .text-slate-650 { color: #cbd5e1 !important; }
+.dark .text-slate-600 { color: #94a3b8 !important; }
+.dark .text-slate-500 { color: #94a3b8 !important; }
+.dark .text-slate-400 { color: #64748b !important; }
+.dark .text-slate-450 { color: #64748b !important; }
+.dark .text-slate-350 { color: #475569 !important; }
+
+/* Subheading tags */
+.dark .text-indigo-600 { color: #818cf8 !important; }
+.dark .text-indigo-650 { color: #818cf8 !important; }
+.dark .bg-indigo-50 { background-color: #1e1b4b !important; }
+.dark .text-purple-600 { color: #c084fc !important; }
+.dark .text-purple-650 { color: #c084fc !important; }
+.dark .bg-purple-50 { background-color: #3b0764 !important; }
+
+/* Shadows and card lift */
+.dark .shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 10px 10px -5px rgba(0, 0, 0, 0.4) !important;
+}
+.dark .shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+}
+.dark .shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.6) !important;
+}
+.dark .card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(99,102,241,0.2) !important;
+}
+
+/* Auth Page Background & Pattern */
+.auth-bg {
+  background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #f0fdfa 100%);
+}
+
+.dark .auth-bg {
+  background: linear-gradient(135deg, #0b0f19 0%, #161f38 50%, #0d1326 100%) !important;
+}
+
+.auth-grid-pattern {
+  background-image: radial-gradient(circle, #a5b4fc 0.8px, transparent 0.8px);
+  background-size: 32px 32px;
+}
+
+.dark .auth-grid-pattern {
+  background-image: radial-gradient(circle, #24325a 0.8px, transparent 0.8px) !important;
+}
+
+/* Simulation Network Canvas */
+.network-canvas {
+  background-color: #fafbfd;
+  background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px), linear-gradient(to right, #f1f5f9 1px, transparent 1px), linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
+  background-size: 20px 20px, 40px 40px, 40px 40px;
+}
+
+.dark .network-canvas {
+  background-color: #0c1122 !important;
+  background-image: radial-gradient(#24325a 1.2px, transparent 1.2px), linear-gradient(to right, #16203a 1px, transparent 1px), linear-gradient(to bottom, #16203a 1px, transparent 1px) !important;
 }

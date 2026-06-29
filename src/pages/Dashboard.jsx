@@ -88,14 +88,19 @@ export default function Dashboard() {
         {/* Welcome Section */}
         <header className="mb-8 animate-fade-in">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <p className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-1">Selamat Datang Kembali 👋</p>
-              <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                Hai, {currentUser.name}!
-              </h1>
-              <p className="text-slate-400 text-sm mt-1 font-medium">
-                Siap mengasah keterampilan TKJ hari ini?
-              </p>
+            <div className="flex items-center space-x-3.5">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-3xl shadow-lg shadow-indigo-500/20">
+                {currentUser.avatar || (currentUser.role === "teacher" ? "👨‍🏫" : "🎒")}
+              </div>
+              <div>
+                <p className="text-xs font-bold text-indigo-500 uppercase tracking-wider mb-0.5">Selamat Datang Kembali 👋</p>
+                <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
+                  Hai, {currentUser.name}!
+                </h1>
+                <p className="text-slate-400 text-sm font-medium">
+                  Siap mengasah keterampilan TKJ hari ini?
+                </p>
+              </div>
             </div>
             <div className="flex items-center space-x-2 bg-gradient-to-r from-indigo-500 to-violet-600 text-white rounded-2xl px-5 py-2.5 text-xs font-bold shadow-lg shadow-indigo-500/20">
               <span>🏆</span>
@@ -167,10 +172,10 @@ export default function Dashboard() {
                             <span className="text-sm w-6 text-center">
                               {idx < 3 ? medals[idx] : <span className="text-[11px] text-slate-400 font-bold">#{idx + 1}</span>}
                             </span>
-                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs text-white ${
+                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center text-base ${
                               isSelf ? "bg-gradient-to-br from-indigo-500 to-violet-600" : "bg-slate-300"
                             }`}>
-                              {student.name.charAt(0).toUpperCase()}
+                              {student.avatar || "🎒"}
                             </div>
                             <div className="overflow-hidden">
                               <p className="font-bold text-slate-700 text-xs truncate max-w-[100px]">{student.name}</p>

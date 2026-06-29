@@ -38,20 +38,14 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #f0fdfa 100%)' }}>
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 auth-bg">
       {/* Animated background orbs */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 w-[400px] h-[400px] bg-indigo-300/30 rounded-full blur-[120px] pointer-events-none animate-float" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 w-[400px] h-[400px] bg-violet-300/30 rounded-full blur-[120px] pointer-events-none" style={{ animationDelay: '1.5s' }} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-cyan-200/20 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Grid pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.35] pointer-events-none"
-        style={{
-          backgroundImage: "radial-gradient(circle, #a5b4fc 0.8px, transparent 0.8px)",
-          backgroundSize: "32px 32px"
-        }}
-      />
+      <div className="absolute inset-0 opacity-[0.35] pointer-events-none auth-grid-pattern" />
 
       <div className="relative w-full max-w-[420px] animate-slide-up">
         {/* Card */}

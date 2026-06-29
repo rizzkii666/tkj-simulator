@@ -6,6 +6,7 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [userData, setUserData] = useState({ name: "Siswa TKJ", xp: 150, level: 1, role: "student" });
+  const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -21,6 +22,16 @@ export default function Sidebar() {
     }
   }, [location]);
 
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("darkMode", "true");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("darkMode", "false");
+    }
+  }, [darkMode]);
+
   const menuItems = [
     { name: "Dashboard", path: "/dashboard", icon: (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>) },
     { name: "Modul Materi", path: "/materi", icon: (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>) },
@@ -29,6 +40,7 @@ export default function Sidebar() {
     { name: "Kuis Interaktif", path: "/quiz", icon: (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>) },
     { name: "Forum Diskusi", path: "/forum", icon: (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" /></svg>) },
     { name: "Statistik Belajar", path: "/stats", icon: (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10a2 2 0 01-2 2h-2a2 2 0 01-2-2zm9-2h1.5a1.5 1.5 0 001.5-1.5v-6a1.5 1.5 0 00-1.5-1.5H18m0 9V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v8a2 2 0 002 2h2a2 2 0 002-2z" /></svg>) },
+    { name: "Pengaturan Profil", path: "/settings", icon: (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>) },
   ];
 
   const teacherMenuItem = { name: "Dashboard Guru", path: "/teacher-dashboard", icon: (<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>) };
@@ -87,8 +99,8 @@ export default function Sidebar() {
           {userData.role !== "teacher" && (
             <div className="bg-gradient-to-br from-indigo-50 to-violet-50 border border-indigo-100/80 rounded-2xl p-4">
               <div className="flex items-center space-x-3 mb-3">
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center font-extrabold text-white text-base shadow-lg shadow-indigo-500/20">
-                  {userData.name.charAt(0).toUpperCase()}
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xl shadow-lg shadow-indigo-500/20">
+                  {userData.avatar || "🎒"}
                 </div>
                 <div className="overflow-hidden flex-1">
                   <p className="font-bold text-slate-800 text-sm truncate">{userData.name}</p>
@@ -118,8 +130,8 @@ export default function Sidebar() {
           {/* Teacher Profile Display */}
           {userData.role === "teacher" && (
             <div className="bg-gradient-to-br from-purple-50 to-fuchsia-50 border border-purple-100/80 rounded-2xl p-4 flex items-center space-x-3">
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-xl shadow-lg shadow-purple-500/20">
-                🎓
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center text-2xl shadow-lg shadow-purple-500/20">
+                {userData.avatar || "👨‍🏫"}
               </div>
               <div className="overflow-hidden">
                 <p className="font-bold text-slate-800 text-sm truncate">{userData.name}</p>
@@ -159,6 +171,35 @@ export default function Sidebar() {
 
         {/* Footer Actions */}
         <div className="space-y-3 pt-4 border-t border-slate-100">
+          {/* Dark Mode Toggle */}
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="flex items-center justify-between px-3.5 py-2.5 w-full rounded-xl text-slate-500 hover:text-indigo-650 hover:bg-slate-50 transition-all duration-200 font-semibold text-[13px] text-left"
+          >
+            <div className="flex items-center space-x-3">
+              {darkMode ? (
+                <>
+                  <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M12 7a5 5 0 100 10 5 5 0 000-10z" />
+                  </svg>
+                  <span>Mode Terang</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                  <span>Mode Gelap</span>
+                </>
+              )}
+            </div>
+            <div className="w-8 h-4 bg-slate-200 dark:bg-slate-700 rounded-full relative transition-colors duration-200">
+              <div className={`w-3 h-3 bg-white rounded-full absolute top-0.5 transition-transform duration-200 ${
+                darkMode ? "translate-x-4.5 bg-indigo-500" : "translate-x-0.5"
+              }`} />
+            </div>
+          </button>
+
           <button
             onClick={handleLogout}
             className="flex items-center space-x-3 px-3.5 py-2.5 w-full rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all duration-200 font-semibold text-[13px] text-left"
