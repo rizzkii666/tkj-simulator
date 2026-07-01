@@ -2,6 +2,34 @@ import { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import { playSound } from "../utils/audio";
 
+const getEmbedUrl = (url) => {
+  if (!url) return null;
+  if (url.includes("/embed/")) return url;
+  
+  let videoId = "";
+  try {
+    if (url.includes("youtu.be/")) {
+      videoId = url.split("youtu.be/")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("youtube.com/shorts/") || url.includes("/shorts/")) {
+      videoId = url.split("/shorts/")[1]?.split(/[?#]/)[0];
+    } else if (url.includes("youtube.com/watch")) {
+      const parts = url.split("?");
+      if (parts.length > 1) {
+        const urlParams = new URLSearchParams(parts[1]);
+        videoId = urlParams.get("v");
+      }
+    } else if (url.includes("youtube.com/v/")) {
+      videoId = url.split("youtube.com/v/")[1]?.split(/[?#]/)[0];
+    } else {
+      videoId = url.trim();
+    }
+  } catch (e) {
+    console.error("Error parsing youtube url", e);
+  }
+  
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+};
+
 export default function Materi() {
   const [activeTab, setActiveTab] = useState("topologi");
   const [customMaterials, setCustomMaterials] = useState([]);
@@ -398,10 +426,10 @@ export default function Materi() {
                   <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 aspect-video">
                     <iframe
                       className="absolute inset-0 w-full h-full"
-                      src="https://www.youtube.com/embed/s_Ntt6eJn90"
-                      title="IP Subnetting Tutorial"
+                      src={getEmbedUrl("https://www.youtube.com/watch?v=L8y-zL9hSbM")}
+                      title="IPv4 | Belajar Subnetting | Indonesia Belajar"
                       frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                     />
                   </div>
@@ -610,10 +638,10 @@ export default function Materi() {
                 <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 aspect-video">
                   <iframe
                     className="absolute inset-0 w-full h-full"
-                    src="https://www.youtube.com/embed/J7gE6t0w1P4"
-                    title="How Routing Works"
+                    src={getEmbedUrl("https://youtu.be/ttdkh0YxgUw?si=9KQ5SVnyKOCxYvbk")}
+                    title="Konsep Dasar Routing Bahasa Indonesia"
                     frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   />
                 </div>
@@ -704,10 +732,10 @@ export default function Materi() {
                 <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 aspect-video">
                   <iframe
                     className="absolute inset-0 w-full h-full"
-                    src="https://www.youtube.com/embed/5W8baR8jC90"
-                    title="RJ45 Crimping Tutorial"
+                    src={getEmbedUrl("https://youtu.be/JDiybTG9dGY?si=GuaoJH5mRtPZVYKM")}
+                    title="Tutorial Crimping Kabel UTP Bahasa Indonesia"
                     frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowFullScreen
                   />
                 </div>
@@ -802,21 +830,38 @@ export default function Materi() {
         {/* Custom Teacher-Uploaded Materials */}
         {activeTab === "guru" && (
           <div className="space-y-6 animate-fade-in">
-            {filteredCustomMaterials.map((mat, idx) => (
-              <div key={idx} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-                <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
-                  <span className="text-[10px] uppercase font-black tracking-wider px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
-                    {mat.category || "Umum"}
-                  </span>
-                  <span className="text-[10px] text-slate-400 font-semibold font-mono">Diupload oleh Guru</span>
+            {filteredCustomMaterials.map((mat, idx) => {
+              const embedUrl = getEmbedUrl(mat.youtube);
+              return (
+                <div key={idx} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                  <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+                    <span className="text-[10px] uppercase font-black tracking-wider px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-100">
+                      {mat.category || "Umum"}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-semibold font-mono">Diupload oleh Guru</span>
+                  </div>
+                  <h3 className="text-lg font-black text-slate-900 mb-2">{mat.title}</h3>
+                  <p className="text-sm text-slate-500 font-semibold mb-4 italic">{mat.description}</p>
+                  
+                  {embedUrl && (
+                    <div className="relative w-full overflow-hidden rounded-2xl border border-slate-200 aspect-video mb-4">
+                      <iframe
+                        className="absolute inset-0 w-full h-full"
+                        src={embedUrl}
+                        title={mat.title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+                  )}
+
+                  <div className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap bg-slate-50 p-4 rounded-2xl border border-slate-200/60 font-medium">
+                    {mat.content}
+                  </div>
                 </div>
-                <h3 className="text-lg font-black text-slate-900 mb-2">{mat.title}</h3>
-                <p className="text-sm text-slate-500 font-semibold mb-4 italic">{mat.description}</p>
-                <div className="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap bg-slate-50 p-4 rounded-2xl border border-slate-200/60 font-medium">
-                  {mat.content}
-                </div>
-              </div>
-            ))}
+              );
+            })}
             {filteredCustomMaterials.length === 0 && (
               <div className="text-center py-8 text-slate-450 font-bold italic bg-white border border-slate-200 rounded-3xl">
                 {"Tidak ditemukan materi guru kustom yang cocok dengan kata kunci \"" + searchQuery + "\"."}

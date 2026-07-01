@@ -110,35 +110,6 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Demo Credentials Box */}
-          <div className="mt-6 p-4 bg-gradient-to-br from-slate-50 to-indigo-50/50 border border-slate-200/60 rounded-2xl text-[11px] space-y-2.5">
-            <p className="font-bold text-slate-700 flex items-center space-x-1.5">
-              <span>🚀</span>
-              <span>Akun Demo Cepat:</span>
-            </p>
-            <div className="flex justify-between items-center font-mono bg-white border border-slate-100 rounded-xl px-3 py-2 shadow-sm">
-              <span className="font-semibold text-indigo-600">demo@tkj.sch.id</span>
-              <span className="text-slate-400 text-[10px]">siswa123</span>
-            </div>
-            <div className="flex justify-between items-center font-mono bg-white border border-slate-100 rounded-xl px-3 py-2 shadow-sm">
-              <span className="font-semibold text-purple-600">guru@tkj.sch.id</span>
-              <span className="text-slate-400 text-[10px]">guru123</span>
-            </div>
-            <div className="flex gap-2 mt-1">
-              <button
-                onClick={() => { playSound("click"); setEmail("demo@tkj.sch.id"); setPassword("siswa123"); }}
-                className="flex-1 bg-white hover:bg-indigo-50 border border-slate-200/80 py-2 rounded-xl text-[10px] font-bold text-slate-600 transition-all active:scale-95"
-              >
-                👤 Autofill Siswa
-              </button>
-              <button
-                onClick={() => { playSound("click"); setEmail("guru@tkj.sch.id"); setPassword("guru123"); }}
-                className="flex-1 bg-white hover:bg-purple-50 border border-slate-200/80 py-2 rounded-xl text-[10px] font-bold text-slate-600 transition-all active:scale-95"
-              >
-                🎓 Autofill Guru
-              </button>
-            </div>
-          </div>
 
           <p className="text-center text-xs text-slate-400 mt-6">
             Belum punya akun?

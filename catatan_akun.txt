@@ -1,0 +1,9 @@
+=== CATATAN AKUN DEMO SIMULASI TKJ ===
+
+1. Akun Siswa:
+   - Email: demo@tkj.sch.id
+   - Password: siswa123
+
+2. Akun Guru:
+   - Email: guru@tkj.sch.id
+   - Password: guru123

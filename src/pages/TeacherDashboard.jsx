@@ -15,6 +15,7 @@ export default function TeacherDashboard() {
   const [matTitle, setMatTitle] = useState("");
   const [matDesc, setMatDesc] = useState("");
   const [matContent, setMatContent] = useState("");
+  const [matYoutube, setMatYoutube] = useState("");
 
   // Quiz Form
   const [quizTitle, setQuizTitle] = useState("");
@@ -69,7 +70,8 @@ export default function TeacherDashboard() {
       category: matCategory,
       title: matTitle,
       description: matDesc,
-      content: matContent
+      content: matContent,
+      youtube: matYoutube
     };
 
     const currentMats = JSON.parse(localStorage.getItem("custom_materials")) || [];
@@ -78,6 +80,7 @@ export default function TeacherDashboard() {
     setMatTitle("");
     setMatDesc("");
     setMatContent("");
+    setMatYoutube("");
     loadData();
     playSound("success");
     alert("Sukses! Materi berhasil diunggah ke kelas siswa.");
@@ -339,6 +342,17 @@ export default function TeacherDashboard() {
                   onChange={(e) => setMatContent(e.target.value)}
                   className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none text-slate-750 focus:bg-white focus:border-purple-500"
                   required
+                />
+              </div>
+
+              <div>
+                <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Link Video YouTube (Opsional)</label>
+                <input
+                  type="text"
+                  placeholder="e.g. https://www.youtube.com/watch?v=wX-S5p8b3zE atau https://youtu.be/wX-S5p8b3zE"
+                  value={matYoutube}
+                  onChange={(e) => setMatYoutube(e.target.value)}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-xs font-medium focus:outline-none text-slate-650 focus:bg-white focus:border-purple-500"
                 />
               </div>
 
